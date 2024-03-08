@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <App></App>
     
-    <Speech text="i am from pakistan" voice="Google UK English Female"/>
+    <Speech text="I am from pakistan" voice="Google UK English Female"/>
     
   </React.StrictMode>
 );

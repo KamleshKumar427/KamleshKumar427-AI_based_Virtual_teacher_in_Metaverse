@@ -5,23 +5,31 @@ import { useSpeechSynthesis } from 'react-speech-kit'
 import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition'
 import axios from 'axios'
 // import reducer from './speechReducer'
+import { useContext } from 'react';
+import { UserContext } from '../contexts/user.context';
+
 
 export default function Snowman(props) {
-    const initialState = {text: ""}
-    // const [state, dispatch] = useReducer(reducer, initialState)
-    const { transcript, resetTranscript } = useSpeechRecognition()
-    const [talk, setTalk] = useState(true)
-    const [listen, setListen] = useState(false)
-    const mouthRef = useRef()
-    // let {speak} = useSpeechSynthesis()
-    
+  const initialState = {text: ""}
+  // const [state, dispatch] = useReducer(reducer, initialState)
+  const { transcript, resetTranscript } = useSpeechRecognition()
+  const [talk, setTalk] = useState(true)
+  const [listen, setListen] = useState(false)
+  const mouthRef = useRef()
+  // let {speak} = useSpeechSynthesis()
+  
+  const { user } = useContext(UserContext);
+
     // speak({text: response.data})
     // speech to text recognition
     function handleListen() {
         if (listen) {
             console.log("Transcript: ", transcript)
+            console.log("user ", user)
+            console.log("user ", user._profile.data.email)
+
             if (transcript != "") {
-              axios.post('http://10.3.40.213:8000/interact_with_teacher/', {"param1": transcript}, {
+              axios.post('http://10.3.40.213:8080/interact_with_teacher/', {"param1": transcript, "email": user._profile.data.email}, {
                   headers: {
                       'Content-Type': 'application/json'
                   }

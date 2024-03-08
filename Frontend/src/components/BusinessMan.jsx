@@ -11,6 +11,10 @@ import React, { useRef, useEffect, useState } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition'
 import axios from 'axios'
+import { useContext } from 'react';
+import { UserContext } from '../contexts/user.context';
+
+
 
 export default function Model(props) {
   const { transcript, resetTranscript } = useSpeechRecognition()
@@ -19,12 +23,19 @@ export default function Model(props) {
   const group = useRef()
   const { nodes, materials, animations } = useGLTF('/businessMan.gltf')
   const { actions } = useAnimations(animations, group)
+  
+  const { user } = useContext(UserContext);
+
 
   function handleListen() {
     if (listen) {
         console.log("Transcript: ", transcript)
+
+        console.log("User object: ", user)
+        console.log("user ", user._profile.data.email)
+
         if (transcript != "") {
-          axios.post('http://10.3.40.213:8000/interact_with_teacher/', {"param1": transcript}, {
+          axios.post('http://10.3.40.213:8080/interact_with_teacher/', {"param1": transcript, "email": user._profile.data.email}, {
               headers: {
                   'Content-Type': 'application/json'
               }
